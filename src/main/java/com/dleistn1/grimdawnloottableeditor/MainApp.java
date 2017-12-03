@@ -8,7 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
+/**
+ * Main application class.
+ * @author Daniel Leistner
+ */
 public class MainApp extends MvvmfxCdiApplication {
     
     

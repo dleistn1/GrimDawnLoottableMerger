@@ -11,6 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+/**
+ * The main application view controller.
+ * @author Daniel Leistner
+ */
 public class MainView implements FxmlView<MainViewModel>, Initializable {
     
     @InjectViewModel

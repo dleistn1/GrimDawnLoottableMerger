@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dleistn1.grimdawnloottableeditor.services;
 
 import java.io.File;
@@ -14,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- *
+ * Service for operations with Grim Dawn item properties.
  * @author Daniel Leistner
  */
 public class DefaultItemPropertyService implements ItemPropertyService{

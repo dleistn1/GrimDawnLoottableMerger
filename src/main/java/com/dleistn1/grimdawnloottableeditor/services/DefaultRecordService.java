@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dleistn1.grimdawnloottableeditor.services;
 
 import com.dleistn1.grimdawnloottableeditor.model.Record;
@@ -17,7 +12,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /**
- *
+ * Service for handling of DBR record files.
  * @author Daniel Leistner
  */
 public class DefaultRecordService implements RecordService{
