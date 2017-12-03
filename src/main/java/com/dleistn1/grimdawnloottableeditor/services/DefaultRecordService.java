@@ -51,30 +51,45 @@ public class DefaultRecordService implements RecordService {
 
 	@Override
 	public void writeLoottableFile(List<Record> records, String path) {
-		try {
-			List<String> loottableEntries = new ArrayList<>();
-
-			for (int currentEntryIndex = 1; currentEntryIndex <= MAX_RECORD_ENTRIES; currentEntryIndex++) {
-				int currentRecordIndex = currentEntryIndex - 1;
-				String recordEntry = records.size() >= currentEntryIndex
-						? records.get(currentRecordIndex).getLoottableRecordEntry()
-						: "";
-				addRecordEntryInLoottable(loottableEntries, recordEntry, currentEntryIndex);
-			}
-
-			try (InputStream resource = this.getClass().getResourceAsStream(TEMPLATE_FILE_PATH)) {
-				List<String> templateFileLines = new BufferedReader(new InputStreamReader(
-						resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
-
-				String joinedTemplateContent = String.join(System.lineSeparator(), templateFileLines);
-				String joinedEntryContent = String.join(System.lineSeparator(), loottableEntries);
-				String loottableContent = joinedTemplateContent.replace(TEMPLATE_REPLACEMENT_MARKER, joinedEntryContent);
-
-				Path createdFile = Files.createFile(Paths.get(path));
-				Files.write(createdFile, loottableContent.getBytes());
-			}
+		try {			
+			createLoottableFile(createLoottableEntries(records), path);			
 		} catch (IOException e) {
 			exceptionHandler.handle(e);
+		}
+	}
+
+	private List<String> createLoottableEntries(List<Record> records) {
+		List<String> loottableEntries = new ArrayList<>();
+		for (int currentEntryIndex = 1; currentEntryIndex <= MAX_RECORD_ENTRIES; currentEntryIndex++) {
+			int currentRecordIndex = currentEntryIndex - 1;
+			String recordEntry = records.size() >= currentEntryIndex
+					? records.get(currentRecordIndex).getLoottableRecordEntry()
+					: "";
+			addRecordEntryInLoottable(loottableEntries, recordEntry, currentEntryIndex);
+		}
+		return loottableEntries;
+	}
+
+	private void createLoottableFile(List<String> loottableEntries, String path) throws IOException {
+		
+		try (InputStream resource = this.getClass().getResourceAsStream(TEMPLATE_FILE_PATH)) {
+			
+			Stream<String> templateFileStream = new BufferedReader(
+					new InputStreamReader(resource, StandardCharsets.UTF_8))
+					.lines();
+			
+			List<String> templateFileLines = templateFileStream
+					.map(item -> {
+						if(item.equals(TEMPLATE_REPLACEMENT_MARKER)){
+							return String.join(System.lineSeparator(), loottableEntries);
+						}else{
+							return item;
+						}
+					})
+					.collect(Collectors.toList());
+			
+			Path createdFile = Files.createFile(Paths.get(path));
+			Files.write(createdFile, templateFileLines);
 		}
 	}
 

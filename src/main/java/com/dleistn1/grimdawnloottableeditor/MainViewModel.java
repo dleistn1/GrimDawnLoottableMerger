@@ -1,18 +1,18 @@
 package com.dleistn1.grimdawnloottableeditor;
 
 import com.dleistn1.grimdawnloottableeditor.model.Record;
+import com.dleistn1.grimdawnloottableeditor.services.RecordService;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import com.dleistn1.grimdawnloottableeditor.services.RecordService;
 
 /**
  * Viewmodel for the application
@@ -80,12 +80,14 @@ public class MainViewModel implements ViewModel{
         List<String> paths = Arrays.asList(inputItemsFolder.get().split(";"));
         List<Record> entries = recordService.query(paths);            
         
-        Collections.sort(entries, (Record a, Record b) -> {
-            return b.getFileName().compareTo(a.getFileName());
-        });
-        
-        Collections.reverse(entries);
-        
+		Collections.reverse(
+				entries
+				.stream()
+				.sorted((Record a, Record b) -> {
+					return b.getFileName().compareTo(a.getFileName());
+				})
+				.collect(Collectors.toList())
+		);        
         entries.forEach((entry) -> records.add(new RecordEntryViewModel(entry)));
     }
     
