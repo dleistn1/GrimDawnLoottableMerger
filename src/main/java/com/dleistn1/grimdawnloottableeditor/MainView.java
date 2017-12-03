@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * The main application view controller.
@@ -37,11 +39,21 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
         
         this.listDbrRecords.setItems(viewModel.recordsProperty());
         this.listDbrRecords.setCellFactory(recordEntryCellFactory);
-        
+        		
         this.txtOutputFilePath.textProperty().bindBidirectional(viewModel.outputFilePathProperty());
         this.txtInputItemsFolder.textProperty().bindBidirectional(viewModel.inputItemsFolderProperty());
     }    
     
+	//this has to be done on list view cause item itself gets no keypressed event
+	@FXML
+	public void onListViewKeyPressed(KeyEvent e){
+		if(e.getCode() != KeyCode.SPACE){
+				return;
+		}			
+		RecordEntryViewModel selectedItem = this.listDbrRecords.getSelectionModel().getSelectedItem();
+		selectedItem.getToggleSelectionCommand().execute();
+	}
+	
     @FXML
     public void listRecordsAction(){
         viewModel.getListRecordsCommand().execute();
