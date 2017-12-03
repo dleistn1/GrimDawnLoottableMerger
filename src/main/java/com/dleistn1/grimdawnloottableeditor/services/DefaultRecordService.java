@@ -1,13 +1,18 @@
 package com.dleistn1.grimdawnloottableeditor.services;
 
 import com.dleistn1.grimdawnloottableeditor.model.Record;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
@@ -20,6 +25,7 @@ public class DefaultRecordService implements RecordService{
     private static final String RECORD_PATH_SPLIT_VALUE = "database";
     private static final String TEMPLATE_REPLACEMENT_MARKER = "<REPLACER>";
     private static final String DEFAULT_ENTRY_WEIGHT = "100";
+	private static final String TEMPLATE_FILE_PATH = "/file/tdyn_dan_template_common_mi.dbr";
        
     private static final int MAX_RECORD_ENTRIES = 80;
        
@@ -45,15 +51,20 @@ public class DefaultRecordService implements RecordService{
                         records.get(currentRecordIndex).getLoottableRecordEntry() :
                         "";            
                 addRecordEntryInLoottable(loottableEntries, recordEntry, currentEntryIndex);
-            }        
-            
-            List<String> templateFileLines = Files.readAllLines(Paths.get(Configuration.TEMPLATE_LOOTTABLE_PATH));
-            String joinedTemplateContent = String.join(System.lineSeparator(), templateFileLines);
-            String joinedEntryContent = String.join(System.lineSeparator(), loottableEntries);            
-            String loottableContent = joinedTemplateContent.replace(TEMPLATE_REPLACEMENT_MARKER, joinedEntryContent);
-                        
-            Path createdFile = Files.createFile(Paths.get(path));
-            Files.write(createdFile, loottableContent.getBytes());              
+            }                 
+			                 
+            try (InputStream resource = this.getClass().getResourceAsStream(TEMPLATE_FILE_PATH)) {
+				List<String> templateFileLines = new BufferedReader(new InputStreamReader(
+					resource, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+				
+				String joinedTemplateContent = String.join(System.lineSeparator(), templateFileLines);
+				String joinedEntryContent = String.join(System.lineSeparator(), loottableEntries);            
+				String loottableContent = joinedTemplateContent.replace(TEMPLATE_REPLACEMENT_MARKER, joinedEntryContent);
+
+				Path createdFile = Files.createFile(Paths.get(path));
+				Files.write(createdFile, loottableContent.getBytes());    
+		    }
+                      
         }catch(Exception e){
             // TODO
         }        
