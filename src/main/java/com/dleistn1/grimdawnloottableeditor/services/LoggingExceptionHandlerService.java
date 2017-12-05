@@ -8,10 +8,10 @@ import java.util.logging.Logger;
  *
  * @author Daniel Leistner
  */
-public class AlertExceptionHandlerService implements ExceptionHandlerService {
+public class LoggingExceptionHandlerService implements ExceptionHandlerService {
 
 	@Override
 	public void handle(Exception e) {
-		Logger.getLogger(AlertExceptionHandlerService.class.getName()).log(Level.SEVERE, null, e);
+		Logger.getLogger(LoggingExceptionHandlerService.class.getName()).log(Level.SEVERE, null, e);
 	}
 }
