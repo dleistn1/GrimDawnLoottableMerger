@@ -3,12 +3,12 @@ package com.dleistn1.grimdawnloottableeditor.services;
 import com.dleistn1.grimdawnloottableeditor.model.Record;
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.inject.Inject;
 
 /**
  * Service for operations with Grim Dawn item properties.
@@ -20,9 +20,6 @@ public class DbrItemPropertyService implements ItemPropertyService {
 	private static final String ITEM_NAME_TAG = "itemNameTag";
 	private static final Map<String, String> ITEM_NAME_CACHE = new HashMap<String, String>();
 
-	@Inject
-	private ExceptionHandlerService exceptionHandler;
-
 	public DbrItemPropertyService() {
 		try (Stream<String> stream = Files.lines(Paths.get(Configuration.TEXTS_PATH))) {
 			if (!ITEM_NAME_CACHE.isEmpty()) {
@@ -30,7 +27,7 @@ public class DbrItemPropertyService implements ItemPropertyService {
 			}
 			stream.forEach((line) -> addToCache(line));
 		} catch (IOException e) {
-			exceptionHandler.handle(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -59,7 +56,7 @@ public class DbrItemPropertyService implements ItemPropertyService {
 					.map(item -> item.split(",")[1])
 					.get();
 		} catch (IOException e) {
-			return null;
+			throw new UncheckedIOException(e);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,9 +32,6 @@ public class RecordServiceImpl implements RecordService {
 	private static final int MAX_RECORD_ENTRIES = 80;
 
 	@Inject
-	private ExceptionHandlerService exceptionHandler;
-
-	@Inject
 	private ItemPropertyService itemPropertyService;
 
 	@Override
@@ -43,19 +41,15 @@ public class RecordServiceImpl implements RecordService {
 			try {
 				addRecordsOfPath(recordList, path);
 			} catch (IOException e) {
-				exceptionHandler.handle(e);
+				throw new UncheckedIOException(e);
 			}
 		});
 		return recordList;
 	}
 
 	@Override
-	public void writeLoottableFile(List<Record> records, String path) {
-		try {
-			createLoottableFile(createLoottableEntries(records), path);
-		} catch (IOException e) {
-			exceptionHandler.handle(e);
-		}
+	public void writeLoottableFile(List<Record> records, String path) throws IOException{
+		createLoottableFile(createLoottableEntries(records), path);
 	}
 
 	private List<String> createLoottableEntries(List<Record> records) {
