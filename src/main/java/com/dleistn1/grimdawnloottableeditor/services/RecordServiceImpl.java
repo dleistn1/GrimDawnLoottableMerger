@@ -21,7 +21,7 @@ import javax.inject.Inject;
  *
  * @author Daniel Leistner
  */
-public class DefaultRecordService implements RecordService {
+public class RecordServiceImpl implements RecordService {
 
 	private static final String RECORD_PATH_SPLIT_VALUE = "database";
 	private static final String TEMPLATE_REPLACEMENT_MARKER = "<REPLACER>";
@@ -110,7 +110,7 @@ public class DefaultRecordService implements RecordService {
 		record.setFileName(file.getName());
 		record.setAbsolutePath(file.getAbsolutePath());
 		record.setLoottableRecordEntry(mapFilePathToLoottablePath(record.getAbsolutePath()));
-		record.setItemName(itemPropertyService.getItemName(file));
+		record.setItemName(itemPropertyService.getItemName(record));
 
 		return record;
 	}

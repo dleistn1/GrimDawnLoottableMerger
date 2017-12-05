@@ -1,6 +1,6 @@
 package com.dleistn1.grimdawnloottableeditor.services;
 
-import java.io.File;
+import com.dleistn1.grimdawnloottableeditor.model.Record;
 
 /**
  * Defines the service for handling of Grim Dawn item properties.
@@ -8,6 +8,5 @@ import java.io.File;
  * @author Daniel Leistner
  */
 public interface ItemPropertyService {
-
-	String getItemName(File itemFile);
+	String getItemName(Record record);
 }

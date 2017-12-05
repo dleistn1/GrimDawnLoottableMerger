@@ -1,5 +1,6 @@
 package com.dleistn1.grimdawnloottableeditor.services;
 
+import com.dleistn1.grimdawnloottableeditor.model.Record;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +15,7 @@ import javax.inject.Inject;
  *
  * @author Daniel Leistner
  */
-public class DefaultItemPropertyService implements ItemPropertyService {
+public class DbrItemPropertyService implements ItemPropertyService {
 
 	private static final String ITEM_NAME_TAG = "itemNameTag";
 	private static final Map<String, String> ITEM_NAME_CACHE = new HashMap<String, String>();
@@ -22,7 +23,7 @@ public class DefaultItemPropertyService implements ItemPropertyService {
 	@Inject
 	private ExceptionHandlerService exceptionHandler;
 
-	public DefaultItemPropertyService() {
+	public DbrItemPropertyService() {
 		try (Stream<String> stream = Files.lines(Paths.get(Configuration.TEXTS_PATH))) {
 			if (!ITEM_NAME_CACHE.isEmpty()) {
 				return;
@@ -34,7 +35,8 @@ public class DefaultItemPropertyService implements ItemPropertyService {
 	}
 
 	@Override
-	public String getItemName(File itemFile) {
+	public String getItemName(Record record) {
+		File itemFile = Paths.get(record.getAbsolutePath()).toFile();
 		String itemName = getItemTagByFile(itemFile);
 		return itemName == null ? "" : ITEM_NAME_CACHE.get(getItemTagByFile(itemFile));
 	}
