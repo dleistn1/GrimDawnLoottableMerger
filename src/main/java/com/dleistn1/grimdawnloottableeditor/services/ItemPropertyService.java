@@ -4,8 +4,10 @@ import java.io.File;
 
 /**
  * Defines the service for handling of Grim Dawn item properties.
+ *
  * @author Daniel Leistner
  */
 public interface ItemPropertyService {
-    String getItemName(File itemFile);
+
+	String getItemName(File itemFile);
 }

@@ -11,26 +11,27 @@ import javafx.scene.control.Label;
 
 /**
  * The view for a record entry.
+ *
  * @author Daniel Leistner
  */
-public class RecordEntryView implements FxmlView<RecordEntryViewModel>, Initializable{
-    
-    @InjectViewModel
-    private RecordEntryViewModel viewModel;
-    
-    @FXML
-    private Label labelItemName;
-    
-    @FXML
-    private Label labelEntryPath;
-    
-    @FXML
-    private CheckBox cbxIsSelected;
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {        
-        this.labelItemName.textProperty().bind(viewModel.itemNameProperty());
-        this.labelEntryPath.textProperty().bind(viewModel.entryPathProperty());
-        this.cbxIsSelected.selectedProperty().bindBidirectional(viewModel.isSelectedProperty());
-    }    
+public class RecordEntryView implements FxmlView<RecordEntryViewModel>, Initializable {
+
+	@InjectViewModel
+	private RecordEntryViewModel viewModel;
+
+	@FXML
+	private Label labelItemName;
+
+	@FXML
+	private Label labelEntryPath;
+
+	@FXML
+	private CheckBox cbxIsSelected;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		this.labelItemName.textProperty().bind(viewModel.itemNameProperty());
+		this.labelEntryPath.textProperty().bind(viewModel.entryPathProperty());
+		this.cbxIsSelected.selectedProperty().bindBidirectional(viewModel.isSelectedProperty());
+	}
 }

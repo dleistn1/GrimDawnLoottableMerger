@@ -51,8 +51,8 @@ public class DefaultRecordService implements RecordService {
 
 	@Override
 	public void writeLoottableFile(List<Record> records, String path) {
-		try {			
-			createLoottableFile(createLoottableEntries(records), path);			
+		try {
+			createLoottableFile(createLoottableEntries(records), path);
 		} catch (IOException e) {
 			exceptionHandler.handle(e);
 		}
@@ -71,23 +71,23 @@ public class DefaultRecordService implements RecordService {
 	}
 
 	private void createLoottableFile(List<String> loottableEntries, String path) throws IOException {
-		
+
 		try (InputStream resource = this.getClass().getResourceAsStream(TEMPLATE_FILE_PATH)) {
-			
+
 			Stream<String> templateFileStream = new BufferedReader(
 					new InputStreamReader(resource, StandardCharsets.UTF_8))
 					.lines();
-			
+
 			List<String> templateFileLines = templateFileStream
 					.map(item -> {
-						if(item.equals(TEMPLATE_REPLACEMENT_MARKER)){
+						if (item.equals(TEMPLATE_REPLACEMENT_MARKER)) {
 							return String.join(System.lineSeparator(), loottableEntries);
-						}else{
+						} else {
 							return item;
 						}
 					})
 					.collect(Collectors.toList());
-			
+
 			Path createdFile = Files.createFile(Paths.get(path));
 			Files.write(createdFile, templateFileLines);
 		}
@@ -96,11 +96,11 @@ public class DefaultRecordService implements RecordService {
 	private void addRecordsOfPath(List<Record> recordList, String path) throws IOException {
 		try (Stream<Path> paths = Files.walk(Paths.get(path))) {
 			paths
-				.filter(Files::isRegularFile)
-				.map(Path::toFile)
-				.forEach((file) -> {
-					recordList.add(createRecord(file));
-				});
+					.filter(Files::isRegularFile)
+					.map(Path::toFile)
+					.forEach((file) -> {
+						recordList.add(createRecord(file));
+					});
 		}
 	}
 

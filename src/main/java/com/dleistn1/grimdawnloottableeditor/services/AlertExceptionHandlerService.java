@@ -5,9 +5,10 @@ import java.util.logging.Logger;
 
 /**
  * Exception handler that shows alerts.
+ *
  * @author Daniel Leistner
  */
-public class AlertExceptionHandlerService implements ExceptionHandlerService{
+public class AlertExceptionHandlerService implements ExceptionHandlerService {
 
 	@Override
 	public void handle(Exception e) {
