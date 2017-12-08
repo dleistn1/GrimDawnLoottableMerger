@@ -25,7 +25,7 @@
 
 		<dependency>
 			<groupId>de.saxsys</groupId>
-			<artifactId>mvvmfx-cdi</artifactId>
+			<artifactId>mvvmfx-guice</artifactId>
 			<version>1.6.0</version>
 		</dependency>
 

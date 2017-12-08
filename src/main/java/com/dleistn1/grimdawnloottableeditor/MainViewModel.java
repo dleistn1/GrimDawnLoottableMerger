@@ -1,8 +1,11 @@
 package com.dleistn1.grimdawnloottableeditor;
 
+import com.dleistn1.grimdawnloottableeditor.infrastructure.ShowMessageEvent;
 import com.dleistn1.grimdawnloottableeditor.model.Record;
 import com.dleistn1.grimdawnloottableeditor.services.ExceptionHandlerService;
 import com.dleistn1.grimdawnloottableeditor.services.RecordService;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.*;
 import java.util.Arrays;
@@ -22,11 +25,9 @@ import javax.inject.Inject;
  */
 public class MainViewModel implements ViewModel {
 
-	@Inject
-	private RecordService recordService;
-
-	@Inject
-	private ExceptionHandlerService exceptionHandlerService;
+	private final EventBus eventBus;
+	private final RecordService recordService;
+	private final ExceptionHandlerService exceptionHandlerService;
 
 	private final Command listRecordsCommand;
 	private final Command createFileCommand;
@@ -36,7 +37,14 @@ public class MainViewModel implements ViewModel {
 
 	private final ObservableList<RecordEntryViewModel> records = FXCollections.observableArrayList();
 
-	public MainViewModel() {
+	@Inject
+	public MainViewModel(EventBus eventBus, RecordService recordService, ExceptionHandlerService exceptionHandlerService) {
+
+		this.eventBus = eventBus;
+		this.recordService = recordService;
+		this.exceptionHandlerService = exceptionHandlerService;
+
+		eventBus.register(this);
 
 		listRecordsCommand = new DelegateCommand(() -> new Action() {
 			@Override
@@ -77,6 +85,11 @@ public class MainViewModel implements ViewModel {
 	 */
 	public StringProperty inputItemsFolderProperty() {
 		return inputItemsFolder;
+	}
+
+	@Subscribe
+	public void onShowMessage(ShowMessageEvent e) {
+		//TODO
 	}
 
 	private void listRecords() {
