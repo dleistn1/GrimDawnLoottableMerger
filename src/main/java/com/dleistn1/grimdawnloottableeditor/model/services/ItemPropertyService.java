@@ -1,4 +1,4 @@
-package com.dleistn1.grimdawnloottableeditor.services;
+package com.dleistn1.grimdawnloottableeditor.model.services;
 
 import com.dleistn1.grimdawnloottableeditor.model.Record;
 
