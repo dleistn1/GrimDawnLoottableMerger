@@ -1,4 +1,4 @@
-package com.dleistn1.grimdawnloottablemerger.services;
+package com.dleistn1.grimdawnloottableeditor.services;
 
 import com.dleistn1.grimdawnloottableeditor.infrastructure.ShowMessageEvent;
 import com.google.common.eventbus.EventBus;

@@ -2,7 +2,7 @@ package com.dleistn1.grimdawnloottableeditor;
 
 import com.dleistn1.grimdawnloottableeditor.infrastructure.ShowMessageEvent;
 import com.dleistn1.grimdawnloottableeditor.model.Record;
-import com.dleistn1.grimdawnloottablemerger.services.ExceptionHandlerService;
+import com.dleistn1.grimdawnloottableeditor.services.ExceptionHandlerService;
 import com.dleistn1.grimdawnloottableeditor.model.services.RecordService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;

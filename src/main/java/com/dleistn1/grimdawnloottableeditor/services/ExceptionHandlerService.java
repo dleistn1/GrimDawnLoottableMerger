@@ -1,4 +1,4 @@
-package com.dleistn1.grimdawnloottablemerger.services;
+package com.dleistn1.grimdawnloottableeditor.services;
 
 /**
  * Service for handling exceptions.
