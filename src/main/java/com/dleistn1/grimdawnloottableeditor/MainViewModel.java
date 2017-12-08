@@ -5,8 +5,6 @@ import com.dleistn1.grimdawnloottableeditor.services.ExceptionHandlerService;
 import com.dleistn1.grimdawnloottableeditor.services.RecordService;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.utils.commands.*;
-import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +27,7 @@ public class MainViewModel implements ViewModel {
 
 	@Inject
 	private ExceptionHandlerService exceptionHandlerService;
-	
+
 	private final Command listRecordsCommand;
 	private final Command createFileCommand;
 
@@ -81,18 +79,12 @@ public class MainViewModel implements ViewModel {
 		return inputItemsFolder;
 	}
 
-	private void listRecords() {		
-		try{
+	private void listRecords() {
+		try {
 			records.clear();
 
 			List<String> paths = Arrays.asList(inputItemsFolder.get().split(";"));
-			List<Record> entries = new ArrayList();
-
-			try{
-				entries = recordService.query(paths);
-			}catch(UncheckedIOException e){
-				
-			}	
+			List<Record> entries = recordService.query(paths);
 
 			Collections.reverse(
 					entries
@@ -103,18 +95,18 @@ public class MainViewModel implements ViewModel {
 							.collect(Collectors.toList())
 			);
 			entries.forEach((entry) -> records.add(new RecordEntryViewModel(entry)));
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			exceptionHandlerService.handle(e);
-		}		
+		}
 	}
 
 	private void createFile() {
-		try{
+		try {
 			List<Record> selectedRecords = this.records.stream()
-				.filter(record -> record.isSelectedProperty().get())
-				.map(RecordEntryViewModel::getRecord)
-				.collect(Collectors.toList());
+					.filter(record -> record.isSelectedProperty().get())
+					.map(RecordEntryViewModel::getRecord)
+					.collect(Collectors.toList());
 
 			String outputPath = outputFilePath.get();
 
@@ -123,9 +115,9 @@ public class MainViewModel implements ViewModel {
 			}
 
 			recordService.writeLoottableFile(selectedRecords, outputPath);
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			exceptionHandlerService.handle(e);
-		}		
+		}
 	}
 }
