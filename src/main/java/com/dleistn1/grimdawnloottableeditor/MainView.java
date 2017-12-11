@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -32,6 +33,9 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
 	@FXML
 	private TextField txtInputItemsFolder;
 
+	@FXML
+	private Label labelStatusBar;
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
@@ -43,6 +47,7 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
 
 		this.txtOutputFilePath.textProperty().bindBidirectional(viewModel.outputFilePathProperty());
 		this.txtInputItemsFolder.textProperty().bindBidirectional(viewModel.inputItemsFolderProperty());
+		this.labelStatusBar.textProperty().bindBidirectional(viewModel.statusMessageProperty());
 	}
 
 	//this has to be done on list view cause item itself gets no keypressed event

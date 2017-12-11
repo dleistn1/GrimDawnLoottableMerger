@@ -2,8 +2,10 @@ package com.dleistn1.grimdawnloottableeditor;
 
 import com.dleistn1.grimdawnloottableeditor.infrastructure.ShowMessageEvent;
 import com.dleistn1.grimdawnloottableeditor.model.Record;
-import com.dleistn1.grimdawnloottableeditor.services.ExceptionHandlerService;
 import com.dleistn1.grimdawnloottableeditor.model.services.RecordService;
+import com.dleistn1.grimdawnloottableeditor.services.ExceptionHandlerService;
+import com.dleistn1.grimdawnloottableeditor.services.LocaleKeys;
+import com.dleistn1.grimdawnloottableeditor.services.LocaleService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import de.saxsys.mvvmfx.ViewModel;
@@ -28,23 +30,27 @@ public class MainViewModel implements ViewModel {
 	private final EventBus eventBus;
 	private final RecordService recordService;
 	private final ExceptionHandlerService exceptionHandlerService;
+	private final LocaleService localeService;
 
 	private final Command listRecordsCommand;
 	private final Command createFileCommand;
 
 	private final StringProperty outputFilePath = new SimpleStringProperty();
 	private final StringProperty inputItemsFolder = new SimpleStringProperty();
+	private final StringProperty statusMessage = new SimpleStringProperty("");
 
 	private final ObservableList<RecordEntryViewModel> records = FXCollections.observableArrayList();
 
 	@Inject
-	public MainViewModel(EventBus eventBus, RecordService recordService, ExceptionHandlerService exceptionHandlerService) {
+	public MainViewModel(EventBus eventBus, RecordService recordService, ExceptionHandlerService exceptionHandlerService,
+			LocaleService localeService) {
 
 		this.eventBus = eventBus;
 		this.recordService = recordService;
 		this.exceptionHandlerService = exceptionHandlerService;
+		this.localeService = localeService;
 
-		eventBus.register(this);
+		this.eventBus.register(this);
 
 		listRecordsCommand = new DelegateCommand(() -> new Action() {
 			@Override
@@ -87,9 +93,20 @@ public class MainViewModel implements ViewModel {
 		return inputItemsFolder;
 	}
 
+	/**
+	 * @return the statusMessage
+	 */
+	public StringProperty statusMessageProperty() {
+		return statusMessage;
+	}
+
+	private void setStatusMessage(String message) {
+		this.statusMessage.set(message);
+	}
+
 	@Subscribe
 	public void onShowMessage(ShowMessageEvent e) {
-		//TODO
+		setStatusMessage(e.getMessage());
 	}
 
 	private void listRecords() {
@@ -108,7 +125,7 @@ public class MainViewModel implements ViewModel {
 							.collect(Collectors.toList())
 			);
 			entries.forEach((entry) -> records.add(new RecordEntryViewModel(entry)));
-
+			setStatusMessage(localeService.get(LocaleKeys.MESSAGE_RECORDS_LOADED, records.size()));
 		} catch (Exception e) {
 			exceptionHandlerService.handle(e);
 		}
@@ -128,7 +145,7 @@ public class MainViewModel implements ViewModel {
 			}
 
 			recordService.writeLoottableFile(selectedRecords, outputPath);
-
+			setStatusMessage(localeService.get(LocaleKeys.MESSAGE_LOOTTABLE_CREATED, selectedRecords.size()));
 		} catch (Exception e) {
 			exceptionHandlerService.handle(e);
 		}

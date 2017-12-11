@@ -12,9 +12,10 @@
 		<Label layoutX="29.0" layoutY="14.0" text="Pfad zu DBR-Ordner der Items" />
 		<Label layoutX="29.0" layoutY="69.0" text="Vollständiger Pfad der Ausgabe-Datei" />
 		<TextField id="txtOutputFilePath" fx:id="txtOutputFilePath" layoutX="29.0" layoutY="92.0" prefHeight="25.0" prefWidth="563.0" />
-		<ListView id="listDbrRecords" fx:id="listDbrRecords" onKeyPressed="#onListViewKeyPressed" layoutX="29.0" layoutY="147.0" prefHeight="433.0" prefWidth="563.0" />
+		<ListView id="listDbrRecords" fx:id="listDbrRecords" layoutX="29.0" layoutY="147.0" onKeyPressed="#onListViewKeyPressed" prefHeight="413.0" prefWidth="563.0" />
 		<Button id="btnCreateFile" fx:id="btnCreateFile" layoutX="606.0" layoutY="147.0" mnemonicParsing="false" onAction="#createFileAction" prefHeight="25.0" prefWidth="108.0" text="Datei erzeugen" />
 		<Label layoutX="29.0" layoutY="124.0" text="DBR-Einträge" />
 		<Button id="btnListRecords" fx:id="btnListRecords" layoutX="606.0" layoutY="36.0" mnemonicParsing="false" onAction="#listRecordsAction" text="Einträge auflisten" />
+      <Label fx:id="labelStatusBar" layoutX="29.0" layoutY="569.0" prefHeight="17.0" prefWidth="563.0" text="Label" />
 	</children>
 </AnchorPane>
